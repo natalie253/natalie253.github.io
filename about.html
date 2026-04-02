@@ -408,9 +408,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:66px;display:flex;ali
 </div>
 <footer class="site-footer">
   <span>2026 Natalie Sorensen, Valencia, CA</span>
-  <span>Questions? <a href="/cdn-cgi/l/email-protection#8ee8fbe0eae0effaefe2e7ebcefde1fcebe0fde0a0ede1e3"><span class="__cf_email__" data-cfemail="f096859e949e9184919c9995b0839f82959e839ede939f9d">[email&#160;protected]</span></a></span>
+  <span>Questions? <a href="mailto:fundnatalie@sorensn.com">fundnatalie@sorensn.com</a></span>
 </footer>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><div class="modal-overlay" id="modal1-overlay" onclick="closeModal1Outside(event)">
+<div class="modal-overlay" id="modal1-overlay" onclick="closeModal1Outside(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModal1()">&#x2715;</button>
     <h3 class="modal-title">Make a donation</h3>
@@ -421,7 +421,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:66px;display:flex;ali
     </div>
     <div class="mpanels-wrap">
       <div class="mbubble" id="m1-bubble"></div>
-      <!-- ONE-TIME -->
       <div class="mpanel" id="m1-panel-once">
         <div class="mtier-grid" style="margin-bottom:0.6rem">
           <button class="mtier" onclick="m1Select(45,'once',this)"><span class="mtier-amt">$45</span><span class="mtier-lbl">1/4 day</span></button>
@@ -431,13 +430,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:66px;display:flex;ali
           <button class="mtier" onclick="m1Select(890,'once',this)"><span class="mtier-amt">$890</span><span class="mtier-lbl">1 week</span></button>
           <button class="mtier" onclick="m1Select(1780,'once',this)"><span class="mtier-amt">$1,780</span><span class="mtier-lbl">10 days</span></button>
         </div>
-        <button class="mtier" style="width:100%;margin-bottom:0.75rem;flex-direction:row;gap:0.5rem;padding:10px 12px;justify-content:center" onclick="window.open('https://donate.stripe.com/dRm6oI5M18YUc0nfpjcbC09','_blank')">
+        <button class="mtier" id="m1-custom-once-btn" style="width:100%;margin-bottom:0.5rem;flex-direction:row;gap:0.5rem;padding:10px 12px;justify-content:center" onclick="m1ShowCustom('once')">
           <span class="mtier-amt" style="font-size:0.95rem">Choose my own amount</span>
         </button>
+        <div id="m1-custom-once-wrap" style="display:none;margin-bottom:0.5rem">
+          <div class="custom-wrap" style="margin-bottom:0.3rem">
+            <span class="sym">$</span>
+            <input type="number" class="custom-input" id="m1-custom-once-val" placeholder="Enter amount" min="1" oninput="m1UpdateCalc('once')">
+          </div>
+          <p id="m1-custom-once-result" style="font-size:0.75rem;color:var(--text-mid);line-height:1.5;min-height:1.1em;text-align:center"></p>
+        </div>
         <button class="donate-btn" onclick="m1Donate()">Donate now</button>
         <p class="mfootnote">Opens secure Stripe checkout.</p>
       </div>
-      <!-- MONTHLY -->
       <div class="mpanel" id="m1-panel-monthly" style="display:none">
         <p style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.6rem;line-height:1.5">Cancel anytime. Every $20/month funds a full day of research per year.</p>
         <div class="mtier-grid-2col" style="margin-bottom:0.6rem">
@@ -446,9 +451,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:66px;display:flex;ali
           <button class="mtier" onclick="m1Select(50,'monthly',this)"><span class="mtier-amt">$50</span><span class="mtier-lbl">funds 3 days per year</span></button>
           <button class="mtier" onclick="m1Select(100,'monthly',this)"><span class="mtier-amt">$100</span><span class="mtier-lbl">funds 6.5 days per year</span></button>
         </div>
-        <button class="mtier" style="width:100%;margin-bottom:0.75rem;flex-direction:row;gap:0.5rem;padding:10px 12px;justify-content:center" onclick="window.open('https://donate.stripe.com/9B6bJ25M1b72c0n90VcbC00','_blank')">
-          <span class="mtier-amt" style="font-size:0.95rem">Choose my own amount</span>
+        <button class="mtier" id="m1-custom-monthly-btn" style="width:100%;margin-bottom:0.5rem;flex-direction:row;gap:0.5rem;padding:10px 12px;justify-content:center" onclick="m1ShowCustom('monthly')">
+          <span class="mtier-amt" style="font-size:0.95rem">Choose my own monthly amount</span>
         </button>
+        <div id="m1-custom-monthly-wrap" style="display:none;margin-bottom:0.5rem">
+          <div class="custom-wrap" style="margin-bottom:0.3rem">
+            <span class="sym">$</span>
+            <input type="number" class="custom-input" id="m1-custom-monthly-val" placeholder="Enter monthly amount" min="1" oninput="m1UpdateCalc('monthly')">
+          </div>
+          <p id="m1-custom-monthly-result" style="font-size:0.75rem;color:var(--text-mid);line-height:1.5;min-height:1.1em;text-align:center"></p>
+        </div>
         <button class="donate-btn" onclick="m1Donate()">Donate now</button>
         <p class="mfootnote">Billed monthly via Stripe. Cancel anytime.</p>
       </div>
