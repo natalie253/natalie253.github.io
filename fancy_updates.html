@@ -289,7 +289,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:66px;display:flex;ali
     </div>
     <div class="mpanels-wrap">
       <div class="mbubble" id="m1-bubble"></div>
-      <!-- ONE-TIME -->
+<!-- ONE-TIME -->
       <div class="mpanel" id="m1-panel-once">
         <div class="mtier-grid" style="margin-bottom:0.6rem">
           <button class="mtier" onclick="m1Select(45,'once',this)"><span class="mtier-amt">$45</span><span class="mtier-lbl">1/4 day</span></button>
@@ -302,7 +302,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:66px;display:flex;ali
         <button class="mtier" id="m1-custom-once-btn" style="width:100%;margin-bottom:0.5rem;flex-direction:row;gap:0.5rem;padding:10px 12px;justify-content:center" onclick="m1ShowCustom('once')">
           <span class="mtier-amt" style="font-size:0.95rem">Choose my own amount</span>
         </button>
-        <div id="m1-custom-once-wrap" style="display:none;margin-bottom:0.5rem">
+        <div id="m1-custom-once-wrap" style="display:none;margin-bottom:0.5rem;visibility:hidden;height:0;overflow:hidden">
           <div class="custom-wrap" style="margin-bottom:0.3rem">
             <span class="sym">$</span>
             <input type="number" class="custom-input" id="m1-custom-once-val" placeholder="Enter amount" min="1" oninput="m1UpdateCalc('once')">
@@ -324,7 +324,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:66px;display:flex;ali
         <button class="mtier" id="m1-custom-monthly-btn" style="width:100%;margin-bottom:0.5rem;flex-direction:row;gap:0.5rem;padding:10px 12px;justify-content:center" onclick="m1ShowCustom('monthly')">
           <span class="mtier-amt" style="font-size:0.95rem">Choose my own monthly amount</span>
         </button>
-        <div id="m1-custom-monthly-wrap" style="display:none;margin-bottom:0.5rem">
+        <div id="m1-custom-monthly-wrap" style="display:none;margin-bottom:0.5rem;visibility:hidden;height:0;overflow:hidden">
           <div class="custom-wrap" style="margin-bottom:0.3rem">
             <span class="sym">$</span>
             <input type="number" class="custom-input" id="m1-custom-monthly-val" placeholder="Enter monthly amount" min="1" oninput="m1UpdateCalc('monthly')">
@@ -444,40 +444,16 @@ function m1UpdateCalc(mode) {
   }
 }
 
-async function m1Donate() {
-  const activePanel = m1Mode === "once" ? "m1-panel-once" : "m1-panel-monthly";
-  const btn = document.querySelector("#" + activePanel + " .donate-btn");
+function m1Donate() {
   if (m1Amount !== null && m1Amount !== "custom") {
     const links = m1Mode === "once" ? STRIPE_ONCE : STRIPE_MONTHLY;
     const url = links[m1Amount];
     if (url) { window.open(url, "_blank"); return; }
   }
-  const inputId = m1Mode === "once" ? "m1-custom-once-val" : "m1-custom-monthly-val";
-  const customVal = parseFloat(document.getElementById(inputId).value);
-  if (!customVal || customVal < 1) { return; }
-  if (btn) { btn.textContent = "Loading..."; btn.disabled = true; }
-  try {
-    const res = await fetch("/api/create-checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: customVal, mode: m1Mode })
-    });
-    const contentType = res.headers.get("content-type") || "";
-    if (!contentType.includes("application/json")) {
-      alert("Payment service unavailable. Please email fundnatalie@sorensn.com");
-      return;
-    }
-    const data = await res.json();
-    if (data.url) { window.location.href = data.url; }
-    else { alert("Error: " + (data.error || "Something went wrong.")); }
-  } catch (err) {
-    console.error(err);
-    alert("Something went wrong. Please try again or email fundnatalie@sorensn.com");
-  } finally {
-    if (btn) { btn.textContent = "Donate now"; btn.disabled = false; }
-  }
+  // Custom — go straight to Stripe custom amount page
+  var url = m1Mode === "once" ? "https://donate.stripe.com/dRm6oI5M18YUc0nfpjcbC09" : "https://donate.stripe.com/9B6bJ25M1b72c0n90VcbC00";
+  window.open(url, "_blank");
 }
-
 </script>
 </body>
 </html>
